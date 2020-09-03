@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/py/sharedmem/client/client.c
+client.h
+D:/py/sharedmem/client/client.h
+../server/sharedmem.h
+D:/py/sharedmem/server/sharedmem.h
+
+D:/py/sharedmem/client/client.h
+stdio.h
+-
+
+D:/py/sharedmem/server/sharedmem.h
+windows.h
+D:/py/sharedmem/server/windows.h
+complex.h
+-
+
