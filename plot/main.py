@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.axes as axes
 import matplotlib.animation
 import numpy as np
-
+ 
 # перебираем возможные backend
 gui_env = ['Qt5Agg', 'GTKAgg', 'TKAgg', 'WXAgg']
 for gui in gui_env:
