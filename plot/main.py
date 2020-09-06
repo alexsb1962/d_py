@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.axes as axes
+from matplotlib.lines import Line2D
+import matplotlib.gridspec as gridspec
 import matplotlib.animation
 import numpy as np
  
@@ -34,14 +36,20 @@ def ex1():
         _ = np.abs(np.fft.rfft(x*window))
         return np.log10(_)
 
-    fig, (ax1, ax2) = plt.subplots(nrows=2)
-    line1, = ax1.plot(x, y)
+
+
+    fg = plt.figure(figsize=(9, 4), constrained_layout=True)
+    gs = fg.add_gridspec(2, 2)
+    ax1 = fg.add_subplot(gs[0, :])
+#    line1, = ax1.plot(x, y)  # plot возвращает список. Запятая заствляет распаковать его
+    line1 = ax1.plot(x, y)[0]  # аналог
     ffty = fftlog(y)
-    fftx=np.linspace(0, len(ffty)-1, len(ffty))
-    line2, = ax2.plot(fftx,ffty)
+    fftx = np.linspace(0, len(ffty)-1, len(ffty))
+    ax2 = fg.add_subplot(gs[1, :])
     ax2.set_xlim(0, 50)
     ax2.set_ylim(0, ffty.max())
-
+    spectr, frec, line2 = ax2.magnitude_spectrum(y)
+    plt.ion()
 
     def update(i):
         y = np.sin((i + 1) / 30. * x)
@@ -49,7 +57,9 @@ def ex1():
         y2 = fftlog(y)
         line2.set_data(range(len(y2)), y2)
 
-    ani = matplotlib.animation.FuncAnimation(fig, update, frames=60, repeat=True)
+    ani = matplotlib.animation.FuncAnimation(fg, update, frames=60, repeat=True)
+
+    plt.ioff()
     plt.show()
 
 
@@ -75,33 +85,7 @@ def ex2():
     plt.ioff()
     plt.show()
 
-class ForWith():
-
-    def __init__(self):
-        self.data='проинициализирован'
-        print(self.data)
-
-    def __enter__(self):
-        print('enter........')
-        return self
-
-    def __exit__(self, type, value, tb):
-        print('exit.....')
-        # например файл бы закрыл здесь
-
-    def __del__(self):
-        print('вызван __del__')
-
-def ex3():
-    with ForWith() as d:
-        print('with')
-        print(d.data)
-
-    print(d.data)
 
 
 if __name__ =='__main__':
     ex1()
-
-
-
