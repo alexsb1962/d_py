@@ -36,9 +36,7 @@ def ex1():
         _ = np.abs(np.fft.rfft(x*window))
         return np.log10(_)
 
-
-
-    fg = plt.figure(figsize=(9, 4), constrained_layout=True)
+    fg = plt.figure(figsize=(20, 6), constrained_layout=True)
     gs = fg.add_gridspec(2, 2)
     ax1 = fg.add_subplot(gs[0, :])
 #    line1, = ax1.plot(x, y)  # plot возвращает список. Запятая заствляет распаковать его
