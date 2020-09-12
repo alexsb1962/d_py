@@ -46,7 +46,7 @@ def ex1():
     ax2 = fg.add_subplot(gs[1, :])
     ax2.set_xlim(0, 50)
     ax2.set_ylim(0, ffty.max())
-    spectr, frec, line2 = ax2.magnitude_spectrum(y)
+    ax2.bar(fftx, ffty)
     plt.ion()
 
     def update(i):
