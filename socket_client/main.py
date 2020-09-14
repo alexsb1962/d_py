@@ -22,38 +22,16 @@ def press_button_command(main_win, port:int):
             except socket.timeout as msg:
                 break
                 main_win
-        # передача пустой команды
-
+        # передача пустой
         while True:
             s.sendto('door_empty'.encode('utf-8'), ('255.255.255.255', port))
             sleep(0.5)
-
-        # ожидание подтверждения
-        try:
-            (data, door_adr) = s.recvfrom(128)
-        except socket.timeout:
-            # device not found
-            pass
-            print('Нет подтверждения....')
-
-        # передача команды
-        s.sendto('door_press'.encode('utf-8'), ('255.255.255.255', port))
-        # ожидание подтверждения
-        s.settimeout(0.5)
-        try:
-            (data, door_adr) = s.recvfrom(128)
-            if data == 'door_press_ok':
-                # success
-                pass
-        except socket.timeout:
-            # fail
-            pass
-            return False
         return True
 
 
 def button_press(event):
     press_button_command(main_win, PORT)
+
 
 
 if __name__ == '__main__':
