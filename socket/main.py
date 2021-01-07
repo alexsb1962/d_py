@@ -1,7 +1,7 @@
 import socket
 import tkinter as tk
 
-PORT = 49001
+PORT = 54545
 
 
 def broadcast_socket() -> socket.socket:
@@ -11,23 +11,19 @@ def broadcast_socket() -> socket.socket:
     return udp_sock
 
 
-def press_button_command(main_win, port:int):
+def press_button_command(port:int):
     # запуск прослушки ответов с очисткой
     with broadcast_socket() as s:
         s.settimeout(0.1)
-        # очистка
+        # очистка на всякий дикий случай
         while True:
             try:
                 data = s.recv(128)
             except socket.timeout as msg:
                 break
-                main_win
+
         # передача пустой команды
-
-        while True:
-            s.sendto('door_empty'.encode('utf-8'), ('255.255.255.255', port))
-            sleep(0.5)
-
+        s.sendto('door_empty'.encode('utf-8'), ('192.168.1.255', port))
         # ожидание подтверждения
         try:
             (data, door_adr) = s.recvfrom(128)
@@ -35,15 +31,21 @@ def press_button_command(main_win, port:int):
             # device not found
             pass
             print('Нет подтверждения....')
+        else:
+            print('Ok')
+            pass
+        finally:
+            pass
 
         # передача команды
-        s.sendto('door_press'.encode('utf-8'), ('255.255.255.255', port))
+        s.sendto('door_press'.encode('utf-8'), ('192.168.1.255', port))
         # ожидание подтверждения
         s.settimeout(0.5)
         try:
             (data, door_adr) = s.recvfrom(128)
             if data == 'door_press_ok':
                 # success
+                # включить вибрацию
                 pass
         except socket.timeout:
             # fail
@@ -53,10 +55,10 @@ def press_button_command(main_win, port:int):
 
 
 def button_press(event):
-    press_button_command(main_win, PORT)
+    press_button_command( PORT)
 
 
 if __name__ == '__main__':
-    main()
+    button_press(1)
 
 
