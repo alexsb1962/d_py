@@ -15,6 +15,10 @@ class Strip:
         return self.a
 
 
+async def corout():
+    pass
+
+
 def main():
     p = Strip(5)
     r = Strip(6)

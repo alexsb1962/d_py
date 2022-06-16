@@ -26,7 +26,7 @@ def ex1():
 
     def filldata(start, end, num):
         _ = np.linspace(start, end-end/(num-1), num)
-        return _
+        return
 
     x = filldata(0, 24 * np.pi, 512)
     y = np.sin(x)
@@ -49,13 +49,20 @@ def ex1():
     ax2.bar(fftx, ffty)
     plt.ion()
 
+    top = 1.0,
+    bottom = 0.045,
+    left = 0.04,
+    right = 0.985,
+    hspace = 0.1,
+    wspace = 0.2
+
     def update(i):
         y = np.sin((i + 1) / 30. * x)
         line1.set_data(x, y)
         y2 = fftlog(y)
         line2.set_data(range(len(y2)), y2)
 
-    ani = matplotlib.animation.FuncAnimation(fg, update, frames=60, repeat=True)
+    # ani = matplotlib.animation.FuncAnimation(fg, update, frames=60, repeat=True)
 
     plt.ioff()
     plt.show()
