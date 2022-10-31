@@ -1,89 +1,54 @@
-from dataclasses import *
+import numpy as np
 import math
 import turtle
 
+class BiFilter:
 
-class OneAllTime:
-    __instance = None
+    def __init__(self, b: np.ndarray=[1.0, 0.0, 0.0], a: np.ndarray=[1.0, 0.0, 0.0], gain: float=1):
+        self.a = a
+        self.b = b
+        self.gain = gain
+        self._reset_filter = True
+        self._in = np.array([0.0, 0.0, 0.0])
+        self._out = np.array([0.0, 0.0, 0.0])
 
-    def __new__(cls, *args, **kwargs):
-        if cls.__instance is not None:
-            return cls.__instance
-        else:
-            cls.__instance = super().__new__(cls, *args, **kwargs)
-            return  cls.__instance
+    def reset(self):
+        self._reset_filter = True
+        for i in range(0, 3):
+            self._in[i] = 0
+            self._out[i] = 0
+
+    def sample(self, s):
+        self._reset_filter = False
+
+        part_sum = self.b[2] * self._in[2]; self._in[2] = self._in[1]
+        part_sum += self.b[1] * self._in[1]; self._in[1] = self._in[0]
+        self._in[0] = s * self.gain
+        part_sum += self.b[0] * self._in[0];
+
+        part_sum -= self.a[2] * self._out[2]; self._out[2] = self._out[1]
+        part_sum -= self.a[1] * self._out[1]; self._out[1] = self._out[0]
+        part_sum -= self.a[0] * self._out[0]; self._out[0] = part_sum
+        return part_sum
 
 
-class Cl:
-    a = 1
-    b = 2
-    c = 3
-
-    def mtd(self, arg):
-        self.a = arg
-
-var = Cl()
-var1 = Cl()
-var.a = 'new'
-var
-var1
-
-wndow = turtle.Screen()
-wndow.title("Screen & Button")
-wndow.setup(500, 500)
-
-btn1 = turtle.Turtle()
-btn1.hideturtle()
-for i in range(2):
-    btn1.fd(80)
-    btn1.left(90)
-    btn1.fd(30)
-    btn1.left(90)
-btn1.penup()
-btn1.goto(11,7)
-btn1.write("Push me", font=("Arial", 12, "normal"))
-
-def btnclick(x, y):
-    if 0<x<80 and 0<y<30:
-        print("Кнопка нажата!")
-        btn1.clear()
-        ball = turtle.Turtle()
-        turtle.fillcolor("orange")
-        turtle.pencolor("purple")
-        turtle.shape("circle")
-
-turtle.listen()
-turtle.onscreenclick(btnclick, 1)
-turtle.done()
+def main():
 
 
 
-@dataclass
-class SomeData:
-    v1: int = 5
-    v2: float = math.pi
+    f0 = BiFilter(b=np.array([0.1, 0.0 , 0.0 ]),
+                  a=np.array([-0.9, -0.0, 0.0]),  gain=1)
+    f0.reset()
+
+    for i in range(0,100):
+        part0 = f0.sample(1.0)
+        print(f"part0={part0}    i={i}")
+
+#        part1 = f1.sample(part0,nom[2,0])
+#        print(f"part1={part1}    w/g={part1*nom[2,0] }")
 
 
-s = SomeData()
-s.v1 = 1
-print(dir(s))
-
-if s.v1 == 2:
-    pass
-
-match s.v1:
-    case 1:
-        pass
-    case _:
-        pass
-
-angle = math.atan2(165, 285) * 180 / math.pi
-print(f'{angle}=')
-
-
-def go_main():
-    pass
 
 
 if __name__ == '__main__':
-    go_main()
+    main()
