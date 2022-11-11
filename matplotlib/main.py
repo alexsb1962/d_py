@@ -1,16 +1,26 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import numpy as np
+import matplotlib.pyplot as plt
+import time
 
 
-# Press the green button in the gutter to run the script.
+
+def exp():
+    with plt.ion():
+        fig = plt.figure(figsize=(2,2), dpi=300)
+        ax = fig.add_axes([0, 0, 0.92, 0.8])
+        # ax = fig.add_subplot(1, 1, 1)
+        x = np.linspace(0, 10.0*np.pi, num=1000)
+        y = np.sin(x)
+        ax.set_ylim(1.5)
+        line, = ax.plot(x, y)
+        fig.show()
+        time.sleep(10)
+
+def plot():
+    exit(100)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    exp()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
